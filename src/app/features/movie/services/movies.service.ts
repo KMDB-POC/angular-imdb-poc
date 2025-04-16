@@ -1,18 +1,33 @@
 import { HttpClient } from '@angular/common/http';
-import { ApiResponse } from '../../../core/models/api-response.model';
-import { MovieResponse } from '../models/api/movies.model';
+import { MovieSearchResponse } from '../models/api/movies.model';
 import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
+import {
+  MoviesFilterOptions,
+  MoviesSearchOptions,
+} from '../models/api/movies-options.model';
 
 @Injectable({ providedIn: 'root' })
 export class MoviesService {
   constructor(private http: HttpClient) {}
 
-  search(query: string) {
+  get(options?: MoviesFilterOptions) {
     return this.http
-      .get<ApiResponse<MovieResponse[]>>(`/search`, {
-        params: { q: query },
+      .get<MovieSearchResponse>(`/discover/movie`, {
+        params: {
+          ...options,
+        },
       })
-      .pipe(map((data) => data.description));
+      .pipe(map((data) => data));
+  }
+
+  search(options: MoviesSearchOptions) {
+    return this.http
+      .get<MovieSearchResponse>(`/search/movie`, {
+        params: {
+          ...options,
+        },
+      })
+      .pipe(map((data) => data));
   }
 }
