@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { MovieSearchResponse } from '../models/api/movies.model';
+import { MovieSearchResponse } from '@features/movie/models/api/movies.model';
 import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {

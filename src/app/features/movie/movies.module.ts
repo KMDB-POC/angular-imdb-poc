@@ -1,22 +1,22 @@
 import { Component, model } from '@angular/core';
-import { MovieListComponent } from '../../components/movie-list.component';
-import { MovieList } from '../../models/ui/movie-list.model';
-import { MoviesService } from '../../services/movies.service';
-import { MovieSearchComponent } from '../../components/movie-search.components';
+import { MovieListComponent } from '@features/movie/components/movie-list/movie-list.component';
+import { MovieList } from '@features/movie/models/ui/movie-list.model';
+import { MoviesService } from '@features/movie/services/movies.service';
+import { MovieSearchComponent } from '@features/movie/components/movie-search/movie-search.components';
 import { CommonModule, NgFor } from '@angular/common';
-import { environment } from '../../../../../environments/environment.development';
-import { MovieCard } from '../../models/ui/movie-card.model';
+import { environment } from '@environments/environment.development';
+import { MovieCard } from '@features/movie/models/ui/movie-card.model';
 
 @Component({
   selector: 'movies',
-  templateUrl: './movies.component.html',
+  templateUrl: './components/movies/movies.component.html',
   standalone: true,
   imports: [MovieListComponent, MovieSearchComponent, NgFor, CommonModule],
   host: {
     class: 'w-full',
   },
 })
-export default class MoviesComponent {
+export default class MoviesModule {
   movieLists = model<MovieList | undefined>();
   currentMovie = model<MovieCard | undefined>();
   loadingState = true;
