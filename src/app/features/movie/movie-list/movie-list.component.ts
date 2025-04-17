@@ -1,9 +1,9 @@
 import { Component, Input, output } from '@angular/core';
 import { NgFor } from '@angular/common';
 
-import { MovieCardComponent } from '@features/movie/components/movie-card/movie-card.component';
-import { MovieList } from '@features/movie/models/ui/movie-list.model';
-import { MovieCard } from '@features/movie/models/ui/movie-card.model';
+import { MovieCardComponent } from '@features/movie/movie-card/movie-card.component';
+import { MovieList } from '@features/movie/movie-list/movie-list.model';
+import { MovieCard } from '@features/movie/movie-card/movie-card.model';
 
 @Component({
   selector: 'movie-list',

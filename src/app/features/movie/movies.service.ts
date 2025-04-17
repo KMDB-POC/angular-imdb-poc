@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { MovieSearchResponse } from '@features/movie/models/api/movies.model';
+import { MovieSearchResponse } from '@features/movie/movies.model';
 import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
   MoviesFilterOptions,
   MoviesSearchOptions,
-} from '../models/api/movies-options.model';
+} from '@features/movie/shared/movies-options.model';
 
 @Injectable({ providedIn: 'root' })
 export class MoviesService {

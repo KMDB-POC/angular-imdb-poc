@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./features/movie/movies.module'),
+    loadChildren: () =>
+      import('./features/movie/movies.module').then((m) => m.MoviesModule),
   },
 ];

@@ -2,7 +2,7 @@ import { Component, Input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 
-import { MovieCard } from '@features/movie/models/ui/movie-card.model';
+import { MovieCard } from '@features/movie/movie-card/movie-card.model';
 
 @Component({
   selector: 'movie-card',
