@@ -1,5 +1,5 @@
 export interface ApiResponse<T> {
-  ok: boolean;
+  page: boolean;
   description: T;
   error_code: number;
 }

@@ -3,4 +3,7 @@ export interface MovieCard {
   img: string;
   title: string;
   score: number;
+  backdrop: string;
+  overview: string;
+  release_date: string;
 }
