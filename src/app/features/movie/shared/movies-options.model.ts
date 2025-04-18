@@ -40,3 +40,8 @@ export interface MoviesSearchOptions {
   year?: string;
   primary_release_year?: string;
 }
+
+export interface MoviesKeywordOptions {
+  query: string;
+  page?: number;
+}

@@ -8,13 +8,23 @@
           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
       </svg>
     </div>
-    <input [(ngModel)]="searchValue" (ngModelChange)="searchValue.set($event)"
-      (keyup.enter)="search.emit(searchValue())" type="search" id="default-search"
+    <input [(ngModel)]="searchValue" (ngModelChange)="inputChange($event)" (keyup.enter)="search.emit(searchValue())"
+      type="search" id="default-search"
       class="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       placeholder="Search..." required />
     <button type="button" (click)="search.emit(searchValue())"
       class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
       Search
     </button>
+    <div class="absolute top-14 left-0 w-full max-h-40 overflow-y-scroll bg-white shadow-lg rounded-md z-10">
+      @for (item of suggestedItems(); track item.id) {
+      <span (click)="searchValue.set(item.name) ; search.emit(searchValue()) ; suggestedItems.set([])"
+        class="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md">
+        {{ item.name }}
+      </span>
+      } @empty {
+      <span></span>
+      }
+    </div>
   </div>
 </div>

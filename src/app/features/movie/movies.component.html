@@ -1,12 +1,15 @@
 <div class="relative w-full flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat h-[28rem]"
   [ngClass]="{ 'bg-gray-800': !currentMovie()}"
-  [ngStyle]="{ 'background-image': 'url(' + currentMovie()?.backdrop + ')' }">
+  [ngStyle]="{ 'background-image': 'url(' + (currentMovie()?.backdrop || 'assets/theater-wallpaper.jpg') + ')' }">
   @if (currentMovie()) {
   <div class="absolute inset-0 bg-white/20 flex items-center justify-center">
     <div class="p-4 w-9/10 sm:w-4/5 md:w-3/5 lg:w-2/5 flex flex-col gap-2 lg:gap-4">
       <h1 class="text-white font-bold text-2xl">{{ currentMovie()?.title }}</h1>
       <div class="flex flex-col gap-1 lg:gap-2">
-        <p class="text-white mt-4">{{ currentMovie()?.overview }}</p>
+        <p class="text-white mt-4 ">
+          {{ (currentMovie()?.overview?.length ?? 0) > 500 ? (currentMovie()?.overview |
+          slice:0:500) + '...' : currentMovie()?.overview }}
+        </p>
         <p class="text-amber-300 mt-4">Rating: {{ currentMovie()?.score }}/10</p>
       </div>
       <movie-search (search)="search($event)"></movie-search>
@@ -18,10 +21,10 @@
   </div>
   }
 </div>
-@if (movieLists()) {
+@if (movieLists() && movieLists()?.movies?.length ?? 0 > 0) {
 <div class="flex items-center justify-center mt-8">
   <movie-list [list]="movieLists()" (select)="selectMovie($event)"></movie-list>
 </div>
 } @else {
-<p>No movies available</p>
+<p class="text-3xl font-bold text-center mt-4">No movies available</p>
 }

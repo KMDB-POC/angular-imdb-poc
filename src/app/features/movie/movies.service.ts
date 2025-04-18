@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { MovieSearchResponse } from '@features/movie/movies.model';
+import {
+  KeywordSearchResponse,
+  MovieSearchResponse,
+} from '@features/movie/movies.model';
 import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
   MoviesFilterOptions,
+  MoviesKeywordOptions,
   MoviesSearchOptions,
 } from '@features/movie/shared/movies-options.model';
 
@@ -24,6 +28,16 @@ export class MoviesService {
   search(options: MoviesSearchOptions) {
     return this.http
       .get<MovieSearchResponse>(`/search/movie`, {
+        params: {
+          ...options,
+        },
+      })
+      .pipe(map((data) => data));
+  }
+
+  findKeyword(options: MoviesKeywordOptions) {
+    return this.http
+      .get<KeywordSearchResponse>(`/search/keyword`, {
         params: {
           ...options,
         },

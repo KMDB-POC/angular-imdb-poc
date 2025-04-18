@@ -1,3 +1,5 @@
+import { PaginatedResponse } from '@core/models/paginated-response.model';
+
 export interface MovieResponse {
   id: number;
   title: string;
@@ -15,9 +17,12 @@ export interface MovieResponse {
   adult: boolean;
 }
 
-export interface MovieSearchResponse {
-  page: number;
-  results: MovieResponse[];
-  total_pages: number;
-  total_results: number;
+export interface MovieSearchResponse extends PaginatedResponse<MovieResponse> {}
+
+export interface KeywordSearch {
+  id: number;
+  name: string;
 }
+
+export interface KeywordSearchResponse
+  extends PaginatedResponse<KeywordSearch> {}
