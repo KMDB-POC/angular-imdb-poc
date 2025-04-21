@@ -27,17 +27,17 @@ export default class MoviesComponent implements OnInit {
   ngOnInit() {
     this.movieService
       .get({
-        sort_by: 'vote_count.desc',
-        'vote_average.lte': 10,
+        SortBy: 'VoteCountDesc',
+        VoteAverageLte: 10,
       })
-      .subscribe((movies) => {
-        this.refreshMovieList(movies);
+      .subscribe((res) => {
+        this.refreshMovieList(res.result);
       });
   }
 
   search(value: string) {
-    this.movieService.search({ query: value }).subscribe((movies) => {
-      this.refreshMovieList(movies);
+    this.movieService.search({ Query: value }).subscribe((res) => {
+      this.refreshMovieList(res.result);
     });
   }
 
@@ -47,11 +47,11 @@ export default class MoviesComponent implements OnInit {
       return {
         id: idx + 1,
         title: movie.title,
-        img: environment.imageUrl + movie.poster_path,
-        score: Math.round(movie.vote_average * 100) / 100,
-        backdrop: environment.imageUrl + movie.backdrop_path,
+        img: movie.posterPath,
+        score: Math.round(movie.voteAverage * 100) / 100,
+        backdrop: movie.backdropPath,
         overview: movie.overview,
-        release_date: movie.release_date,
+        release_date: movie.releaseDate,
       };
     });
     this.movieLists.set({ movies: movieArr });

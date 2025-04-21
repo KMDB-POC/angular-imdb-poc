@@ -10,6 +10,7 @@ import {
   MoviesKeywordOptions,
   MoviesSearchOptions,
 } from '@features/movie/shared/movies-options.model';
+import { ApiResponse } from '@core/models/api-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class MoviesService {
@@ -17,7 +18,7 @@ export class MoviesService {
 
   get(options?: MoviesFilterOptions) {
     return this.http
-      .get<MovieSearchResponse>(`/discover/movie`, {
+      .get<ApiResponse<MovieSearchResponse>>(`/movie`, {
         params: {
           ...options,
         },
@@ -27,7 +28,7 @@ export class MoviesService {
 
   search(options: MoviesSearchOptions) {
     return this.http
-      .get<MovieSearchResponse>(`/search/movie`, {
+      .get<ApiResponse<MovieSearchResponse>>(`/movie/search`, {
         params: {
           ...options,
         },
@@ -37,7 +38,7 @@ export class MoviesService {
 
   findKeyword(options: MoviesKeywordOptions) {
     return this.http
-      .get<KeywordSearchResponse>(`/search/keyword`, {
+      .get<ApiResponse<KeywordSearchResponse>>(`/movie/keyword`, {
         params: {
           ...options,
         },
