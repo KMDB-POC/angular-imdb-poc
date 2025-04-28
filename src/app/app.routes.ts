@@ -6,4 +6,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/movie/movies.module').then((m) => m.MoviesModule),
   },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./features/login/login.module').then((m) => m.LoginModule),
+  },
 ];

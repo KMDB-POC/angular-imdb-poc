@@ -12,7 +12,7 @@ import { MovieSearchResponse } from './movies.model';
   selector: 'movies',
   templateUrl: './movies.component.html',
   standalone: true,
-  imports: [MovieListComponent, MovieSearchComponent, NgFor, CommonModule],
+  imports: [MovieListComponent, MovieSearchComponent, CommonModule],
   host: {
     class: 'w-full',
   },
