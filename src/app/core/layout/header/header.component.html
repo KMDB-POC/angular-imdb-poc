@@ -1,0 +1,17 @@
+<header class="bg-[#0a0c17] py-3 px-8">
+  <div class="flex justify-end items-center">
+    <nav>
+      <div class="flex items-center gap-4">
+        @if (!isAuthenticated) {
+        <a routerLink="/login" class="text-blue-500 hover:text-blue-400">Login</a>
+        <a routerLink="/signup" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded">Sign Up</a>
+        } @else {
+        <p class="text-white mr-2">{{ currentUserName }}</p>
+        <div class="size-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+          <mat-icon aria-hidden="false" aria-label="Avatar" fontIcon="person"></mat-icon>
+        </div>
+        }
+      </div>
+    </nav>
+  </div>
+</header>

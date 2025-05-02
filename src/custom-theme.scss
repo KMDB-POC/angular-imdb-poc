@@ -1,0 +1,123 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define custom palettes for your Movie Finder application
+// Each palette needs to have a main/500, lighter/100, darker/700, and contrast colors
+$movie-finder-primary: mat.define-palette(
+  (
+    50: #e3f2fd,
+    100: #bbdefb,
+    200: #90caf9,
+    300: #64b5f6,
+    400: #42a5f5,
+    500: #1976d2,
+    // Primary color
+    600: #1565c0,
+    700: #0d47a1,
+    // Darker variant
+    800: #0a3880,
+    900: #072a60,
+    contrast: (
+      50: rgba(black, 0.87),
+      100: rgba(black, 0.87),
+      200: rgba(black, 0.87),
+      300: rgba(black, 0.87),
+      400: rgba(black, 0.87),
+      500: white,
+      600: white,
+      700: white,
+      800: white,
+      900: white,
+    ),
+  )
+);
+
+$movie-finder-accent: mat.define-palette(
+  (
+    50: #fde7f3,
+    100: #f9c2e2,
+    200: #f699ce,
+    300: #f26fb9,
+    400: #f04da9,
+    500: #ec407a,
+    // Accent color
+    600: #e91e63,
+    700: #d81b60,
+    // Darker variant
+    800: #c2185b,
+    900: #ad1457,
+    contrast: (
+      50: rgba(black, 0.87),
+      100: rgba(black, 0.87),
+      200: rgba(black, 0.87),
+      300: rgba(black, 0.87),
+      400: white,
+      500: white,
+      600: white,
+      700: white,
+      800: white,
+      900: white,
+    ),
+  )
+);
+
+// You could also use the Material Design palette generator to create these values:
+// https://material.io/design/color/the-color-system.html#tools-for-picking-colors
+
+// The warn palette is optional (defaults to red).
+$movie-finder-warn: mat.define-palette(
+  (
+    50: #ffebee,
+    100: #ffcdd2,
+    200: #ef9a9a,
+    300: #e57373,
+    400: #ef5350,
+    500: #f44336,
+    // Warn color
+    600: #e53935,
+    700: #d32f2f,
+    // Darker variant
+    800: #c62828,
+    900: #b71c1c,
+    contrast: (
+      50: rgba(black, 0.87),
+      100: rgba(black, 0.87),
+      200: rgba(black, 0.87),
+      300: rgba(black, 0.87),
+      400: rgba(black, 0.87),
+      500: white,
+      600: white,
+      700: white,
+      800: white,
+      900: white,
+    ),
+  )
+);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$movie-finder-theme: mat.define-dark-theme(
+  (
+    // Changed to dark theme for better movie experience
+    color:
+      (
+        primary: $movie-finder-primary,
+        accent: $movie-finder-accent,
+        warn: $movie-finder-warn,
+      ),
+    typography: mat.define-typography-config(),
+    density: 0
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($movie-finder-theme);

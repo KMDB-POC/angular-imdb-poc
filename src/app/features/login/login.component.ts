@@ -8,6 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { LoginService } from './login.service';
+import { Router } from '@angular/router';
+import { environment } from '@environments/environment.development';
 
 @Component({
   selector: 'login',
@@ -20,6 +22,7 @@ import { LoginService } from './login.service';
 })
 export default class LoginComponent {
   constructor(private loginService: LoginService) {}
+  private router = inject(Router);
 
   private formBuilder = inject(FormBuilder);
 
@@ -32,12 +35,32 @@ export default class LoginComponent {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       if (email && password) {
-        this.loginService.login({ email, password }).subscribe((res) => {
-          console.log(res);
+        this.loginService.login({ email, password }).subscribe({
+          next: (res) => {
+            console.log('Login successful', res);
+            this.router.navigate(['/']);
+          },
+          error: (error) => {
+            console.error('Login failed', error);
+          },
         });
       } else {
         console.error('Form values are invalid.');
       }
     }
+  }
+
+  loginWithGoogle() {
+    window.location.href =
+      environment.apiBaseUrl +
+      '/auth/login/google?redirectUrl=' +
+      this.router.url;
+  }
+
+  loginWithFacebook() {
+    window.location.href =
+      environment.apiBaseUrl +
+      '/auth/login/facebook?redirectUrl=' +
+      this.router.url;
   }
 }

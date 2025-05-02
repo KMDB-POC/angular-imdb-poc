@@ -36,9 +36,20 @@ export default class MoviesComponent implements OnInit {
   }
 
   search(value: string) {
-    this.movieService.search({ Query: value }).subscribe((res) => {
-      this.refreshMovieList(res.result);
-    });
+    if (value.length > 0) {
+      this.movieService.search({ Query: value }).subscribe((res) => {
+        this.refreshMovieList(res.result);
+      });
+    } else {
+      this.movieService
+        .get({
+          SortBy: 'VoteCountDesc',
+          VoteAverageLte: 10,
+        })
+        .subscribe((res) => {
+          this.refreshMovieList(res.result);
+        });
+    }
   }
 
   refreshMovieList(movies: MovieSearchResponse) {

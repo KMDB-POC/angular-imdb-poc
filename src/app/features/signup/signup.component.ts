@@ -1,13 +1,9 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { LoginService } from './signup.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SignupService } from './signup.service';
+import { Router } from '@angular/router';
+import { environment } from '@environments/environment.development';
 
 @Component({
   selector: 'signup',
@@ -19,25 +15,48 @@ import { LoginService } from './signup.service';
   },
 })
 export default class SignupComponent {
-  constructor(private SignupService: LoginService) {}
+  constructor(private signupService: SignupService) {}
+
+  private router = inject(Router);
 
   private formBuilder = inject(FormBuilder);
 
-  loginForm = this.formBuilder.group({
+  signupForm = this.formBuilder.group({
+    name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      if (email && password) {
-        this.loginService.login({ email, password }).subscribe((res) => {
-          console.log(res);
+    if (this.signupForm.valid) {
+      const { name, email, password } = this.signupForm.value;
+      if (name && email && password) {
+        this.signupService.signup({ name, email, password }).subscribe({
+          next: (res) => {
+            console.log('Signup successful', res);
+            this.router.navigate(['/login']);
+          },
+          error: (error) => {
+            console.error('Signup failed', error);
+          },
         });
       } else {
         console.error('Form values are invalid.');
       }
     }
+  }
+
+  signupWithGoogle() {
+    window.location.href =
+      environment.apiBaseUrl +
+      '/auth/register/google?redirectUrl=' +
+      this.router.url;
+  }
+
+  signupWithFacebook() {
+    window.location.href =
+      environment.apiBaseUrl +
+      '/auth/register/facebook?redirectUrl=' +
+      this.router.url;
   }
 }

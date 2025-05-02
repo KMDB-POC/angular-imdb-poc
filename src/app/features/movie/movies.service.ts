@@ -1,48 +1,36 @@
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import {
   KeywordSearchResponse,
   MovieSearchResponse,
 } from '@features/movie/movies.model';
 import { map } from 'rxjs';
-import { Injectable } from '@angular/core';
 import {
   MoviesFilterOptions,
   MoviesKeywordOptions,
   MoviesSearchOptions,
 } from '@features/movie/shared/movies-options.model';
 import { ApiResponse } from '@core/models/api-response.model';
+import { BackendApiService } from '@core/services/backend-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class MoviesService {
-  constructor(private http: HttpClient) {}
+  constructor(private backendApi: BackendApiService) {}
 
   get(options?: MoviesFilterOptions) {
-    return this.http
-      .get<ApiResponse<MovieSearchResponse>>(`/movie`, {
-        params: {
-          ...options,
-        },
-      })
+    return this.backendApi
+      .get<ApiResponse<MovieSearchResponse>>('/movie', options)
       .pipe(map((data) => data));
   }
 
   search(options: MoviesSearchOptions) {
-    return this.http
-      .get<ApiResponse<MovieSearchResponse>>(`/movie/search`, {
-        params: {
-          ...options,
-        },
-      })
+    return this.backendApi
+      .get<ApiResponse<MovieSearchResponse>>('/movie/search', options)
       .pipe(map((data) => data));
   }
 
   findKeyword(options: MoviesKeywordOptions) {
-    return this.http
-      .get<ApiResponse<KeywordSearchResponse>>(`/movie/keyword`, {
-        params: {
-          ...options,
-        },
-      })
+    return this.backendApi
+      .get<ApiResponse<KeywordSearchResponse>>('/movie/keyword', options)
       .pipe(map((data) => data));
   }
 }

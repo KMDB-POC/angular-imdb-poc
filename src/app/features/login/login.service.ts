@@ -1,16 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { LoginRequest, LoginResponse } from './login.model';
-import { ApiResponse } from '@core/models/api-response.model';
-import { map } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { LoginRequest } from './login.model';
+import { BackendApiService } from '@core/services/backend-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  constructor(private http: HttpClient) {}
+  private backendApi = inject(BackendApiService);
 
   login(request: LoginRequest) {
-    return this.http
-      .post<ApiResponse<LoginResponse>>(`/auth/login`, request)
-      .pipe(map((data) => data));
+    return this.backendApi.post(`/auth/login`, request);
   }
 }
