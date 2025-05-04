@@ -1,6 +1,11 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { SignupService } from './signup.service';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment.development';
@@ -14,18 +19,26 @@ import { environment } from '@environments/environment.development';
     class: 'w-full',
   },
 })
-export default class SignupComponent {
-  constructor(private signupService: SignupService) {}
+export default class SignupComponent implements OnInit {
+  signupForm!: FormGroup;
 
-  private router = inject(Router);
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private signupService: SignupService
+  ) {}
 
-  private formBuilder = inject(FormBuilder);
+  ngOnInit(): void {
+    this.initForm();
+  }
 
-  signupForm = this.formBuilder.group({
-    name: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-  });
+  initForm(): void {
+    this.signupForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
 
   onSubmit() {
     if (this.signupForm.valid) {

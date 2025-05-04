@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   KeywordSearchResponse,
   MovieSearchResponse,
+  MovieVideoResponse,
 } from '@features/movie/movies.model';
 import { map } from 'rxjs';
 import {
@@ -31,6 +32,12 @@ export class MoviesService {
   findKeyword(options: MoviesKeywordOptions) {
     return this.backendApi
       .get<ApiResponse<KeywordSearchResponse>>('/movie/keyword', options)
+      .pipe(map((data) => data));
+  }
+
+  getVideos(movieId: number) {
+    return this.backendApi
+      .get<ApiResponse<MovieVideoResponse>>(`/movie/${movieId}/videos`)
       .pipe(map((data) => data));
   }
 }

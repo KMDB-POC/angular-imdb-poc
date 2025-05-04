@@ -1,3 +1,4 @@
+import { InformationResponse } from '@core/models/information-response.model';
 import { PaginatedResponse } from '@core/models/paginated-response.model';
 
 export interface MovieResponse {
@@ -26,3 +27,15 @@ export interface KeywordSearch {
 
 export interface KeywordSearchResponse
   extends PaginatedResponse<KeywordSearch> {}
+
+export interface MovieVideo {
+  id: string;
+  publishedAt: string; // timestamp
+  name: string;
+  youtubeUrl: string;
+  site: string;
+  size: number;
+  type: string;
+}
+
+export interface MovieVideoResponse extends InformationResponse<MovieVideo> {}

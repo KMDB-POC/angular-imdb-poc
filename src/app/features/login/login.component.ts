@@ -1,5 +1,5 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -20,16 +20,25 @@ import { environment } from '@environments/environment.development';
     class: 'w-full',
   },
 })
-export default class LoginComponent {
-  constructor(private loginService: LoginService) {}
-  private router = inject(Router);
+export default class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
 
-  private formBuilder = inject(FormBuilder);
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private loginService: LoginService
+  ) {}
 
-  loginForm = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-  });
+  ngOnInit(): void {
+    this.initForm();
+  }
+
+  initForm(): void {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {

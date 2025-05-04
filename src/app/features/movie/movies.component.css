@@ -1,0 +1,42 @@
+.section-container {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #0a0c17;
+}
+
+.search-section {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.content-section {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.search-container {
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-heading {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .section-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .section-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}

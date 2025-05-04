@@ -7,24 +7,39 @@ import { CommonModule, NgFor } from '@angular/common';
 import { environment } from '@environments/environment.development';
 import { MovieCard } from '@features/movie/movie-card/movie-card.model';
 import { MovieSearchResponse } from './movies.model';
+import { VideoListComponent } from './video-list/video-list.component';
+import { VideoList } from './video-list/video-list.model';
+import { VideoCard } from './video-card/video-card.model';
+import { formatDate } from 'date-fns';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'movies',
   templateUrl: './movies.component.html',
+  styleUrls: ['./movies.component.css'],
   standalone: true,
-  imports: [MovieListComponent, MovieSearchComponent, CommonModule],
-  host: {
-    class: 'w-full',
-  },
+  imports: [
+    MovieListComponent,
+    MovieSearchComponent,
+    VideoListComponent,
+    CommonModule,
+  ],
 })
 export default class MoviesComponent implements OnInit {
   movieLists = model<MovieList | undefined>();
+  videoLists = model<VideoList | undefined>();
+
   currentMovie = model<MovieCard | undefined>();
   loadingState = true;
 
   constructor(private movieService: MoviesService) {}
 
   ngOnInit() {
+    this.loadPopularMovies();
+    this.loadLatestTrailers();
+  }
+
+  loadPopularMovies() {
     this.movieService
       .get({
         SortBy: 'VoteCountDesc',
@@ -33,6 +48,45 @@ export default class MoviesComponent implements OnInit {
       .subscribe((res) => {
         this.refreshMovieList(res.result);
       });
+  }
+
+  loadLatestTrailers() {
+    const today = new Date();
+    const latestMovies = this.movieService.get({
+      SortBy: 'PopularityDesc',
+      ReleaseDateLte: formatDate(today, 'yyyy-MM-dd'),
+      ReleaseDateGte: formatDate(
+        today.setDate(today.getDate() - 30),
+        'yyyy-MM-dd'
+      ),
+    });
+    latestMovies.subscribe((res) => {
+      const latestVideos: VideoCard[] = [];
+      for (let i = 0; i < res.result.results.length; i++) {
+        const movie = res.result.results[i];
+        const video = this.movieService.getVideos(movie.id);
+
+        video.forEach((videoRes) => {
+          if (latestVideos.length >= 4) {
+            return;
+          }
+          const trailer = videoRes.result.results.find(
+            (v) => v.type === 'Trailer'
+          );
+          if (trailer) {
+            const videoCard: VideoCard = {
+              id: 1,
+              title: movie.title,
+              img: movie.backdropPath,
+              publishedAt: trailer.publishedAt,
+              youtubeUrl: trailer.youtubeUrl,
+            };
+            latestVideos.push(videoCard);
+          }
+        });
+      }
+      this.videoLists.set({ videos: latestVideos });
+    });
   }
 
   search(value: string) {

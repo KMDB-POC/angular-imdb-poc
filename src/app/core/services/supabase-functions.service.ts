@@ -13,15 +13,9 @@ export class SupabaseFunctionsService {
   /**
    * Subscribe email to receive notifications about new movies
    */
-  subscribeEmail(
-    email: string,
-    firstName: string,
-    lastName: string
-  ): Observable<any> {
+  subscribeEmail(email: string): Observable<any> {
     return this.http.post('/create-subscriber-movie', {
-      email,
-      first_name: firstName,
-      last_name: lastName,
+      email: email,
     });
   }
 
@@ -30,7 +24,7 @@ export class SupabaseFunctionsService {
    */
   unsubscribeEmail(email: string): Observable<any> {
     return this.http.post('/unsubscribe-movie', {
-      email,
+      email: email,
     });
   }
 }

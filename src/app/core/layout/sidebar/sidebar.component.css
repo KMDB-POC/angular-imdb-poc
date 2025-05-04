@@ -1,12 +1,42 @@
 .active {
-  color: #3b82f6; /* blue-500 */
+  color: #3b82f6;
   font-weight: 500;
 }
 
 .sidebar {
-  background-color: #0f172a; /* darker blue from screenshot */
+  background-color: #0f172a;
   width: 250px;
   border-right: 1px solid rgba(30, 41, 59, 0.7);
   height: 100%;
-  overflow-y: auto; /* In case sidebar content becomes too long */
+  overflow-y: auto;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+  z-index: 50;
+}
+
+.sidebar-open {
+  transform: translateX(0);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-closed {
+  transform: translateX(-100%);
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    width: 280px;
+  }
+}
+
+.sidebar-container {
+  height: 100%;
 }

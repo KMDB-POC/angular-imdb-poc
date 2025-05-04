@@ -1,13 +1,30 @@
-<header class="bg-[#0a0c17] py-3 px-8">
-  <div class="flex justify-end items-center">
-    <nav>
+<header [ngClass]="{
+  'shadow-[0_1px_4px_#010204]': isScrolled,
+}"
+  class="bg-[#0a0c17] w-full md:w-[calc(100%-250px)] py-3 px-8 duration-[400ms] fixed top-0 right-0 left-0 md:left-[250px] z-20">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="flex items-center">
+      <button *ngIf="sidebar.isMobile$ | async" class="text-white hover:text-blue-400 transition-colors"
+        (click)="toggleSidebar()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="6" y2="6"></line>
+          <line x1="4" x2="20" y1="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="ml-auto">
       <div class="flex items-center gap-4">
         @if (!isAuthenticated) {
-        <a routerLink="/login" class="text-blue-500 hover:text-blue-400">Login</a>
-        <a routerLink="/signup" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded">Sign Up</a>
+        <a routerLink="/login" class="text-blue-500 hover:text-blue-400 transition-colors duration-200">Login</a>
+        <a routerLink="/signup"
+          class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded transition-colors duration-200">Sign Up</a>
         } @else {
         <p class="text-white mr-2">{{ currentUserName }}</p>
-        <div class="size-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+        <div
+          class="size-8 rounded-full bg-blue-500 flex items-center justify-center text-white hover:bg-blue-400 transition-colors duration-200">
           <mat-icon aria-hidden="false" aria-label="Avatar" fontIcon="person"></mat-icon>
         </div>
         }

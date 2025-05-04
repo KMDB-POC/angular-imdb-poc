@@ -1,16 +1,18 @@
-<div class="px-8 py-8 bg-[#0a0c17]">
-  <div class="max-w-lg mx-auto">
+<div class="section-container search-section">
+  <div class="search-container">
     <movie-search (search)="search($event)"></movie-search>
   </div>
 </div>
 
-@if (movieLists() && movieLists()?.movies?.length ?? 0 > 0) {
-<div class="px-8 py-6 bg-[#0a0c17]">
-  <h2 class="text-white text-xl font-medium mb-6">Popular Movies</h2>
-  <movie-list [list]="movieLists()" (select)="selectMovie($event)" class="w-full"></movie-list>
-</div>
-} @else {
-<div class="py-12 flex justify-center bg-[#0a0c17]">
-  <p class="text-xl text-gray-400">No movies available</p>
+@if (videoLists() && videoLists()?.videos?.length ?? 0 > 0) {
+<div class="section-container content-section">
+  <h2 class="section-heading">Latest Trailers</h2>
+  <video-list [list]="videoLists()"></video-list>
 </div>
 }
+
+<div class="section-container content-section">
+  <h2 class="section-heading">Popular Movies</h2>
+  <movie-list [list]="movieLists()" [isLoading]="loadingState" (select)="selectMovie($event)">
+  </movie-list>
+</div>

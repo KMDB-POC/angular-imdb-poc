@@ -9,6 +9,7 @@ import { debounceTime } from 'rxjs';
   templateUrl: './movie-search.component.html',
   imports: [FormsModule],
   standalone: true,
+  styleUrls: ['./movie-search.component.css'],
 })
 export class MovieSearchComponent {
   constructor(private movieService: MoviesService) {}
