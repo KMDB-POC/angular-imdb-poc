@@ -59,8 +59,17 @@ export class AuthService {
   }
 
   logout(): void {
-    this.currentUserSubject.next(null);
-    this.isAuthenticatedSubject.next(false);
-    this.router.navigate(['/login']);
+    this.backendApi.post('/auth/logout', {}).subscribe({
+      next: () => {
+        this.currentUserSubject.next(null);
+        this.isAuthenticatedSubject.next(false);
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        this.currentUserSubject.next(null);
+        this.isAuthenticatedSubject.next(false);
+        this.router.navigate(['/login']);
+      },
+    });
   }
 }

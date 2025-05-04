@@ -60,16 +60,18 @@ export default class LoginComponent implements OnInit {
   }
 
   loginWithGoogle() {
+    const returnUrl =
+      this.router.parseUrl(this.router.url).queryParams['returnUrl'] ||
+      window.location.origin;
     window.location.href =
-      environment.apiBaseUrl +
-      '/auth/login/google?redirectUrl=' +
-      this.router.url;
+      environment.apiBaseUrl + '/auth/login/google?redirectUrl=' + returnUrl;
   }
 
   loginWithFacebook() {
+    const returnUrl =
+      this.router.parseUrl(this.router.url).queryParams['returnUrl'] ||
+      window.location.origin;
     window.location.href =
-      environment.apiBaseUrl +
-      '/auth/login/facebook?redirectUrl=' +
-      this.router.url;
+      environment.apiBaseUrl + '/auth/login/facebook?redirectUrl=' + returnUrl;
   }
 }
