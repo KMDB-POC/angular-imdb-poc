@@ -24,7 +24,7 @@ export class MovieSearchComponent {
     debounceTime(500);
     this.searchValue.set(event);
     this.movieService.findKeyword({ Query: event }).subscribe((data) => {
-      this.suggestedItems.set(data.result.results);
+      this.suggestedItems.set(data.result?.results || []);
     });
   }
 }

@@ -62,14 +62,14 @@ export default class SignupComponent implements OnInit {
   signupWithGoogle() {
     window.location.href =
       environment.apiBaseUrl +
-      '/auth/register/google?redirectUrl=' +
+      '/auth/login/google?redirectUrl=' +
       this.router.url;
   }
 
   signupWithFacebook() {
     window.location.href =
       environment.apiBaseUrl +
-      '/auth/register/facebook?redirectUrl=' +
+      '/auth/login/facebook?redirectUrl=' +
       this.router.url;
   }
 }

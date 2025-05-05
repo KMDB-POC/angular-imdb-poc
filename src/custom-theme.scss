@@ -121,3 +121,75 @@ $movie-finder-theme: mat.define-dark-theme(
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($movie-finder-theme);
+
+// Custom snackbar styles
+// Define variables for snackbar colors
+$snackbar-error-bg: #f44336;
+$snackbar-error-color: white;
+$snackbar-success-bg: #4caf50;
+$snackbar-success-color: white;
+$snackbar-info-bg: white;
+$snackbar-info-color: rgba(0, 0, 0, 0.87);
+
+// Custom snackbar styling for Material components
+.mat-mdc-snack-bar-container {
+  &.error-snackbar {
+    --mdc-snackbar-container-color: #{$snackbar-error-bg};
+    --mat-mdc-snack-bar-button-color: #{$snackbar-error-color};
+    --mdc-snackbar-supporting-text-color: #{$snackbar-error-color};
+
+    .mat-mdc-button {
+      color: #{$snackbar-error-color};
+    }
+  }
+
+  &.success-snackbar {
+    --mdc-snackbar-container-color: #{$snackbar-success-bg};
+    --mat-mdc-snack-bar-button-color: #{$snackbar-success-color};
+    --mdc-snackbar-supporting-text-color: #{$snackbar-success-color};
+
+    .mat-mdc-button {
+      color: #{$snackbar-success-color};
+    }
+  }
+
+  &.info-snackbar {
+    --mdc-snackbar-container-color: #{$snackbar-info-bg};
+    --mat-mdc-snack-bar-button-color: #{$snackbar-info-color};
+    --mdc-snackbar-supporting-text-color: #{$snackbar-info-color};
+
+    .mat-mdc-button {
+      color: #{$snackbar-info-color};
+    }
+  }
+}
+
+// Additional styling for the custom snackbar component
+app-custom-snackbar {
+  &.error-snackbar {
+    background-color: $snackbar-error-bg;
+    color: $snackbar-error-color;
+
+    .mat-icon {
+      color: $snackbar-error-color;
+    }
+  }
+
+  &.success-snackbar {
+    background-color: $snackbar-success-bg;
+    color: $snackbar-success-color;
+
+    .mat-icon {
+      color: $snackbar-success-color;
+    }
+  }
+
+  &.info-snackbar {
+    background-color: $snackbar-info-bg;
+    color: $snackbar-info-color;
+
+    .mat-icon {
+      color: $snackbar-info-color;
+    }
+  }
+}

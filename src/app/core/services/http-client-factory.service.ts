@@ -4,9 +4,11 @@ import {
   HttpBackend,
   HttpHandler,
   HttpRequest,
+  HttpEvent,
 } from '@angular/common/http';
-import { apiInterceptor } from '@core/interceptors/api.interceptor';
-import { supabaseApiInterceptor } from '@core/interceptors/supabase-api.interceptor';
+import { ApiInterceptor } from '@core/interceptors/api.interceptor';
+import { SupabaseApiInterceptor } from '@core/interceptors/supabase-api.interceptor';
+import { Observable } from 'rxjs';
 
 export const BACKEND_HTTP_CLIENT = new InjectionToken<HttpClient>(
   'BackendHttpClient'
@@ -15,14 +17,11 @@ export const SUPABASE_HTTP_CLIENT = new InjectionToken<HttpClient>(
   'SupabaseHttpClient'
 );
 
-class InterceptedHandler implements HttpHandler {
-  constructor(
-    private backend: HttpBackend,
-    private interceptor: (req: HttpRequest<any>, next: HttpHandler) => any
-  ) {}
+class InterceptingHandler implements HttpHandler {
+  constructor(private interceptor: HttpHandler) {}
 
-  handle(req: HttpRequest<any>) {
-    return this.interceptor(req, this.backend);
+  handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
+    return this.interceptor.handle(req);
   }
 }
 
@@ -30,22 +29,30 @@ class InterceptedHandler implements HttpHandler {
   providedIn: 'root',
 })
 export class HttpClientFactoryService {
-  constructor(private httpBackend: HttpBackend) {}
+  constructor(
+    private httpBackend: HttpBackend,
+    private apiInterceptor: ApiInterceptor,
+    private supabaseApiInterceptor: SupabaseApiInterceptor
+  ) {}
 
   createHttpClient(type: 'backend' | 'supabase'): HttpClient {
     switch (type) {
       case 'backend':
-        const backendHandler = new InterceptedHandler(
-          this.httpBackend,
-          (req, next) => apiInterceptor(req, next.handle.bind(next))
-        );
+        const backendInterceptor = {
+          handle: (req: HttpRequest<any>) => {
+            return this.apiInterceptor.intercept(req, this.httpBackend);
+          },
+        };
+        const backendHandler = new InterceptingHandler(backendInterceptor);
         return new HttpClient(backendHandler);
 
       case 'supabase':
-        const supabaseHandler = new InterceptedHandler(
-          this.httpBackend,
-          (req, next) => supabaseApiInterceptor(req, next.handle.bind(next))
-        );
+        const supabaseInterceptor = {
+          handle: (req: HttpRequest<any>) => {
+            return this.supabaseApiInterceptor.intercept(req, this.httpBackend);
+          },
+        };
+        const supabaseHandler = new InterceptingHandler(supabaseInterceptor);
         return new HttpClient(supabaseHandler);
 
       default:

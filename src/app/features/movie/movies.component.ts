@@ -62,18 +62,18 @@ export default class MoviesComponent implements OnInit {
     });
     latestMovies.subscribe((res) => {
       const latestVideos: VideoCard[] = [];
-      for (let i = 0; i < res.result.results.length; i++) {
-        const movie = res.result.results[i];
-        const video = this.movieService.getVideos(movie.id);
+      for (let i = 0; i < (res.result?.results.length ?? 0); i++) {
+        const movie = res.result?.results[i];
+        const video = movie ? this.movieService.getVideos(movie.id) : [];
 
         video.forEach((videoRes) => {
           if (latestVideos.length >= 4) {
             return;
           }
-          const trailer = videoRes.result.results.find(
+          const trailer = videoRes.result?.results.find(
             (v) => v.type === 'Trailer'
           );
-          if (trailer) {
+          if (trailer && movie) {
             const videoCard: VideoCard = {
               id: 1,
               title: movie.title,
@@ -92,7 +92,9 @@ export default class MoviesComponent implements OnInit {
   search(value: string) {
     if (value.length > 0) {
       this.movieService.search({ Query: value }).subscribe((res) => {
-        this.refreshMovieList(res.result);
+        if (res.result) {
+          this.refreshMovieList(res.result);
+        }
       });
     } else {
       this.movieService
@@ -101,24 +103,27 @@ export default class MoviesComponent implements OnInit {
           VoteAverageLte: 10,
         })
         .subscribe((res) => {
-          this.refreshMovieList(res.result);
+          if (res.result) {
+            this.refreshMovieList(res.result);
+          }
         });
     }
   }
 
-  refreshMovieList(movies: MovieSearchResponse) {
+  refreshMovieList(movies: MovieSearchResponse | null) {
     this.loadingState = true;
-    const movieArr: MovieCard[] = movies.results.map((movie, idx) => {
-      return {
-        id: idx + 1,
-        title: movie.title,
-        img: movie.posterPath,
-        score: Math.round(movie.voteAverage * 100) / 100,
-        backdrop: movie.backdropPath,
-        overview: movie.overview,
-        release_date: movie.releaseDate,
-      };
-    });
+    const movieArr: MovieCard[] =
+      movies?.results.map((movie, idx) => {
+        return {
+          id: idx + 1,
+          title: movie.title,
+          img: movie.posterPath,
+          score: Math.round(movie.voteAverage * 100) / 100,
+          backdrop: movie.backdropPath,
+          overview: movie.overview,
+          release_date: movie.releaseDate,
+        };
+      }) || [];
     this.movieLists.set({ movies: movieArr });
     this.currentMovie.set(movieArr[0]);
     this.loadingState = false;
