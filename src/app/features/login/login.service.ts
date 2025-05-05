@@ -1,12 +1,19 @@
 import { Injectable, inject } from '@angular/core';
 import { LoginRequest } from './login.model';
 import { BackendApiService } from '@core/services/backend-api.service';
+import { EncryptionUtils } from '@core/utils/encryption.utils';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
   private backendApi = inject(BackendApiService);
+  private encryptionUtils = inject(EncryptionUtils);
 
   login(request: LoginRequest) {
-    return this.backendApi.post(`/auth/login`, request);
+    const secureRequest = {
+      ...request,
+      password: this.encryptionUtils.safeEncrypt(request.password),
+    };
+
+    return this.backendApi.post(`/auth/login`, secureRequest);
   }
 }

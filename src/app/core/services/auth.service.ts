@@ -28,26 +28,32 @@ export class AuthService {
   }
 
   checkAuthStatus(passLogout?: boolean): Observable<boolean> {
-    return this.backendApi.get<ApiResponse<User>>('/auth/me').pipe(
-      map((response) => {
-        if (response && response.statusCode < 400) {
-          this.currentUserSubject.next(response.result);
-          this.isAuthenticatedSubject.next(true);
-          return true;
-        } else {
+    return this.backendApi
+      .get<ApiResponse<User>>(
+        '/auth/me',
+        null,
+        this.backendApi.createSkipErrorHandlerHeaders()
+      )
+      .pipe(
+        map((response) => {
+          if (response && response.statusCode < 400) {
+            this.currentUserSubject.next(response.result);
+            this.isAuthenticatedSubject.next(true);
+            return true;
+          } else {
+            if (!passLogout) {
+              this.logout();
+            }
+            return false;
+          }
+        }),
+        catchError(() => {
           if (!passLogout) {
             this.logout();
           }
-          return false;
-        }
-      }),
-      catchError(() => {
-        if (!passLogout) {
-          this.logout();
-        }
-        return of(false);
-      })
-    );
+          return of(false);
+        })
+      );
   }
 
   isAuthenticated(): Observable<boolean> {

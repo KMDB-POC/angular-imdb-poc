@@ -9,6 +9,7 @@ import {
 import { SignupService } from './signup.service';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment.development';
+import { CustomSnackbarService } from '@shared/components/custom-snackbar/custom-snackbar.service';
 
 @Component({
   selector: 'signup',
@@ -25,7 +26,8 @@ export default class SignupComponent implements OnInit {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private signupService: SignupService
+    private signupService: SignupService,
+    private snackBar: CustomSnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -46,15 +48,15 @@ export default class SignupComponent implements OnInit {
       if (name && email && password) {
         this.signupService.signup({ name, email, password }).subscribe({
           next: (res) => {
-            console.log('Signup successful', res);
+            this.snackBar.openSnackBar(
+              'Signup successful! Please check your email to verify your account.',
+              'success'
+            );
             this.router.navigate(['/login']);
-          },
-          error: (error) => {
-            console.error('Signup failed', error);
           },
         });
       } else {
-        console.error('Form values are invalid.');
+        this.snackBar.openSnackBar('Form values are invalid.', 'error');
       }
     }
   }
