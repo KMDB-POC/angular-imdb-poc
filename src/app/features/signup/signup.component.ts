@@ -52,7 +52,7 @@ export default class SignupComponent implements OnInit {
               'Signup successful! Please check your email to verify your account.',
               'success'
             );
-            this.router.navigate(['/login']);
+            this.router.navigate(['/verify']);
           },
         });
       } else {

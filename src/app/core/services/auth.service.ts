@@ -20,10 +20,7 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  private backendApi = inject(BackendApiService);
-  private router = inject(Router);
-
-  constructor() {
+  constructor(private backendApi: BackendApiService, private router: Router) {
     this.checkAuthStatus(true).subscribe();
   }
 
@@ -38,8 +35,9 @@ export class AuthService {
         map((response) => {
           if (response && response.statusCode < 400) {
             this.currentUserSubject.next(response.result);
-            this.isAuthenticatedSubject.next(true);
-            return true;
+            const isVerified = response.result?.isVerified ?? false;
+            this.isAuthenticatedSubject.next(isVerified);
+            return isVerified;
           } else {
             if (!passLogout) {
               this.logout();

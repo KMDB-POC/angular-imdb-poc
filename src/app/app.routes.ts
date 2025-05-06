@@ -10,7 +10,6 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        // canActivate: [authGuard],
         loadChildren: () =>
           import('./features/movie/movies.module').then((m) => m.MoviesModule),
       },
@@ -29,6 +28,11 @@ export const routes: Routes = [
         path: 'signup',
         loadChildren: () =>
           import('./features/signup/signup.module').then((m) => m.SignupModule),
+      },
+      {
+        path: 'verify',
+        loadChildren: () =>
+          import('./features/verify/verify.module').then((m) => m.VerifyModule),
       },
     ],
   },

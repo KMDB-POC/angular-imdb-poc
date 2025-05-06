@@ -1,0 +1,57 @@
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <h2 class="mt-10 text-center text-3xl/9 font-bold tracking-tight text-gray-100">Verify Your Account</h2>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form class="space-y-6" [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="email" class="block text-sm/6 font-medium text-gray-100">Email address</label>
+        <div class="mt-2">
+          <input type="email" name="email" id="email" autocomplete="email" required formControlName="email"
+            class="block w-full rounded-md bg-gray-800 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1"
+            [ngClass]="{'outline-red-500': verifyForm.get('email')?.invalid && (verifyForm.get('email')?.dirty || verifyForm.get('email')?.touched),
+                     'outline-gray-700': !(verifyForm.get('email')?.invalid && (verifyForm.get('email')?.dirty || verifyForm.get('email')?.touched))}">
+        </div>
+        <div
+          *ngIf="verifyForm.get('email')?.invalid && (verifyForm.get('email')?.dirty || verifyForm.get('email')?.touched)"
+          class="mt-1 text-sm text-red-500">
+          <div *ngIf="verifyForm.get('email')?.errors?.['required']">Email is required.</div>
+          <div *ngIf="verifyForm.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+        </div>
+      </div>
+
+      <div>
+        <label for="token" class="block text-sm/6 font-medium text-gray-100">Verification Code</label>
+        <div class="mt-2">
+          <input type="text" name="token" id="token" required formControlName="token"
+            class="block w-full rounded-md bg-gray-800 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1"
+            [ngClass]="{'outline-red-500': verifyForm.get('token')?.invalid && (verifyForm.get('token')?.dirty || verifyForm.get('token')?.touched),
+                     'outline-gray-700': !(verifyForm.get('token')?.invalid && (verifyForm.get('token')?.dirty || verifyForm.get('token')?.touched))}">
+        </div>
+        <div
+          *ngIf="verifyForm.get('token')?.invalid && (verifyForm.get('token')?.dirty || verifyForm.get('token')?.touched)"
+          class="mt-1 text-sm text-red-500">
+          <div *ngIf="verifyForm.get('token')?.errors?.['required']">Verification code is required.</div>
+          <div *ngIf="verifyForm.get('token')?.errors?.['minlength'] || verifyForm.get('token')?.errors?.['maxlength']">
+            Verification code must be 5 digits.</div>
+          <div *ngIf="verifyForm.get('token')?.errors?.['pattern']">Verification code must contain only
+            numbers.</div>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" [disabled]="verifyForm.invalid"
+          [ngClass]="{'bg-indigo-400 hover:bg-indigo-300': !verifyForm.invalid, 'bg-indigo-300 cursor-not-allowed': verifyForm.invalid}"
+          class="flex w-full justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-gray-100 shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
+          Verify Account
+        </button>
+      </div>
+    </form>
+
+    <p class="mt-10 text-center text-sm/6 text-gray-400">
+      Back to
+      <a href="/login" class="font-semibold text-indigo-400 hover:text-indigo-300">Login</a>
+    </p>
+  </div>
+</div>

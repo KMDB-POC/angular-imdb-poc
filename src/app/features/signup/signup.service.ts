@@ -6,8 +6,10 @@ import { EncryptionUtils } from '@core/utils/encryption.utils';
 
 @Injectable({ providedIn: 'root' })
 export class SignupService {
-  private backendApi = inject(BackendApiService);
-  private encryptionUtils = inject(EncryptionUtils);
+  constructor(
+    private backendApi: BackendApiService,
+    private encryptionUtils: EncryptionUtils
+  ) {}
 
   signup(request: SignupRequest): Observable<any> {
     const secureRequest = {

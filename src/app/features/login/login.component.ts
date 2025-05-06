@@ -11,6 +11,7 @@ import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment.development';
 import { ApiResponse } from '@core/models/api-response.model';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'login',
@@ -46,14 +47,11 @@ export default class LoginComponent implements OnInit {
       const { email, password } = this.loginForm.value;
       if (email && password) {
         this.loginService.login({ email, password }).subscribe({
-          next: (res: ApiResponse<any> | any) => {
-            if (res.status_code < 400) {
-              const returnUrl =
-                this.router.parseUrl(this.router.url).queryParams[
-                  'returnUrl'
-                ] || '/';
-              this.router.navigate([returnUrl]);
-            }
+          next: (res) => {
+            const returnUrl =
+              this.router.parseUrl(this.router.url).queryParams['returnUrl'] ||
+              '/';
+            this.router.navigate([returnUrl]);
           },
         });
       } else {
