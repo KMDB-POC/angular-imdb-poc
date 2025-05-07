@@ -5,10 +5,10 @@ import { EncryptionUtils } from '@core/utils/encryption.utils';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  constructor(
-    private backendApi: BackendApiService,
-    private encryptionUtils: EncryptionUtils
-  ) {}
+  private backendApi = inject(BackendApiService);
+  private encryptionUtils = inject(EncryptionUtils);
+
+  constructor() {}
 
   login(request: LoginRequest) {
     const secureRequest = {

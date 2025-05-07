@@ -23,8 +23,6 @@ export class SidebarComponent implements OnInit {
   isSidebarOpen$ = this.isSidebarOpenSubject.asObservable();
   isMobile$ = this.isMobileSubject.asObservable();
 
-  constructor() {}
-
   ngOnInit(): void {
     this.checkScreenSize();
     this.isSidebarOpenSubject.next(!this.isMobileView());

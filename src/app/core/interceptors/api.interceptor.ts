@@ -7,7 +7,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { ApiResponse } from '@core/models/api-response.model';
 import { CustomSnackbarService } from '@shared/components/custom-snackbar/custom-snackbar.service';
@@ -16,7 +16,7 @@ export const SKIP_ERROR_HANDLER_HEADER = 'X-Skip-Error-Handler';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-  constructor(private snackBar: CustomSnackbarService) {}
+  private snackBar = inject(CustomSnackbarService);
 
   intercept(
     req: HttpRequest<any>,

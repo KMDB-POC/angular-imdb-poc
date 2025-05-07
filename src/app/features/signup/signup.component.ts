@@ -23,12 +23,10 @@ import { CustomSnackbarService } from '@shared/components/custom-snackbar/custom
 export default class SignupComponent implements OnInit {
   signupForm!: FormGroup;
 
-  constructor(
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private signupService: SignupService,
-    private snackBar: CustomSnackbarService
-  ) {}
+  private signupService = inject(SignupService);
+  private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
+  private snackBar = inject(CustomSnackbarService);
 
   ngOnInit(): void {
     this.initForm();

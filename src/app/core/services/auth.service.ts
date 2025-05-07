@@ -16,11 +16,12 @@ export interface User {
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  private backendApi = inject(BackendApiService);
+  private router = inject(Router);
 
-  constructor(private backendApi: BackendApiService, private router: Router) {
+  constructor() {
     this.checkAuthStatus(true).subscribe();
   }
 

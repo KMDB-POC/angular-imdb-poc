@@ -1,7 +1,8 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { filter, Subscription } from 'rxjs';
+import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-auth-layout',
@@ -10,25 +11,19 @@ import { filter, Subscription } from 'rxjs';
   standalone: true,
   imports: [RouterOutlet],
 })
-export class AuthLayoutComponent implements OnInit, OnDestroy {
-  private routerSubscription: Subscription | undefined;
+export class AuthLayoutComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit() {
-    this.checkAuthStatus();
-
-    this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+  constructor() {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed()
+      )
       .subscribe(() => {
         this.checkAuthStatus();
       });
-  }
-
-  ngOnDestroy() {
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
   }
 
   private checkAuthStatus() {

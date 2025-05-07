@@ -1,17 +1,12 @@
-import {
-  Component,
-  HostListener,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, HostListener, inject, Input, OnInit } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-import { filter, Subscription } from 'rxjs';
+import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +14,7 @@ import { filter, Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule, MatButtonModule, RouterLink, MatIconModule],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   @Input() sidebar!: SidebarComponent;
 
   currentRoute: string = '';
@@ -28,48 +23,38 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isScrolled: boolean = false;
   isProfileMenuOpen: boolean = false;
 
-  private authSubscription: Subscription | undefined;
-  private userSubscription: Subscription | undefined;
-  private routerSubscription: Subscription | undefined;
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor(private authService: AuthService, private router: Router) {
-    this.currentRoute = window.location.href;
-  }
-
-  ngOnInit(): void {
-    this.authSubscription = this.authService
+  constructor() {
+    this.authService
       .isAuthenticated()
+      .pipe(takeUntilDestroyed())
       .subscribe((auth) => {
         this.isAuthenticated = auth;
       });
 
-    this.userSubscription = this.authService
+    this.authService
       .getCurrentUser()
+      .pipe(takeUntilDestroyed())
       .subscribe((user) => {
         this.currentUserName = user?.name || null;
       });
 
-    this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed()
+      )
       .subscribe(() => {
         this.currentRoute = window.location.href;
       });
 
-    this.authService.checkAuthStatus().subscribe();
-
-    this.checkScroll();
+    this.authService.checkAuthStatus(true).subscribe();
   }
 
-  ngOnDestroy(): void {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
+  ngOnInit(): void {
+    this.checkScroll();
   }
 
   @HostListener('window:scroll', [])

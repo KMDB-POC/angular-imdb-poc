@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { BACKEND_HTTP_CLIENT } from './http-client-factory.service';
 import { Observable, catchError, throwError } from 'rxjs';
@@ -10,7 +10,7 @@ import { SKIP_ERROR_HANDLER_HEADER } from '@core/interceptors/api.interceptor';
   providedIn: 'root',
 })
 export class BackendApiService {
-  constructor(@Inject(BACKEND_HTTP_CLIENT) private http: HttpClient) {}
+  private http = inject<HttpClient>(BACKEND_HTTP_CLIENT);
 
   get<T>(endpoint: string, params?: any, headers?: HttpHeaders): Observable<T> {
     let httpParams = new HttpParams();

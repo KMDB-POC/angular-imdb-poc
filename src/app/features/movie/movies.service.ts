@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   KeywordSearchResponse,
   MovieSearchResponse,
@@ -15,29 +15,45 @@ import { BackendApiService } from '@core/services/backend-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class MoviesService {
-  constructor(private backendApi: BackendApiService) {}
+  private backendApi = inject(BackendApiService);
 
   get(options?: MoviesFilterOptions) {
     return this.backendApi
-      .get<ApiResponse<MovieSearchResponse>>('/movie', options)
+      .get<ApiResponse<MovieSearchResponse>>(
+        '/movie',
+        options,
+        this.backendApi.createSkipErrorHandlerHeaders()
+      )
       .pipe(map((data) => data));
   }
 
   search(options: MoviesSearchOptions) {
     return this.backendApi
-      .get<ApiResponse<MovieSearchResponse>>('/movie/search', options)
+      .get<ApiResponse<MovieSearchResponse>>(
+        '/movie/search',
+        options,
+        this.backendApi.createSkipErrorHandlerHeaders()
+      )
       .pipe(map((data) => data));
   }
 
   findKeyword(options: MoviesKeywordOptions) {
     return this.backendApi
-      .get<ApiResponse<KeywordSearchResponse>>('/movie/keyword', options)
+      .get<ApiResponse<KeywordSearchResponse>>(
+        '/movie/keyword',
+        options,
+        this.backendApi.createSkipErrorHandlerHeaders()
+      )
       .pipe(map((data) => data));
   }
 
   getVideos(movieId: number) {
     return this.backendApi
-      .get<ApiResponse<MovieVideoResponse>>(`/movie/${movieId}/videos`)
+      .get<ApiResponse<MovieVideoResponse>>(
+        `/movie/${movieId}/videos`,
+        null,
+        this.backendApi.createSkipErrorHandlerHeaders()
+      )
       .pipe(map((data) => data));
   }
 }

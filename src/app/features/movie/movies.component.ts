@@ -1,4 +1,4 @@
-import { Component, model, OnInit } from '@angular/core';
+import { Component, inject, model, OnInit } from '@angular/core';
 import { MovieListComponent } from '@features/movie/movie-list/movie-list.component';
 import { MovieList } from '@features/movie/movie-list/movie-list.model';
 import { MoviesService } from '@features/movie/movies.service';
@@ -28,11 +28,10 @@ import { take } from 'rxjs';
 export default class MoviesComponent implements OnInit {
   movieLists = model<MovieList | undefined>();
   videoLists = model<VideoList | undefined>();
-
   currentMovie = model<MovieCard | undefined>();
   loadingState = true;
 
-  constructor(private movieService: MoviesService) {}
+  private movieService = inject(MoviesService);
 
   ngOnInit() {
     this.loadPopularMovies();
@@ -45,8 +44,10 @@ export default class MoviesComponent implements OnInit {
         SortBy: 'VoteCountDesc',
         VoteAverageLte: 10,
       })
-      .subscribe((res) => {
-        this.refreshMovieList(res.result);
+      .subscribe({
+        next: (res) => {
+          this.refreshMovieList(res.result);
+        },
       });
   }
 
@@ -60,41 +61,45 @@ export default class MoviesComponent implements OnInit {
         'yyyy-MM-dd'
       ),
     });
-    latestMovies.subscribe((res) => {
-      const latestVideos: VideoCard[] = [];
-      for (let i = 0; i < (res.result?.results.length ?? 0); i++) {
-        const movie = res.result?.results[i];
-        const video = movie ? this.movieService.getVideos(movie.id) : [];
+    latestMovies.subscribe({
+      next: (res) => {
+        const latestVideos: VideoCard[] = [];
+        for (let i = 0; i < (res.result?.results.length ?? 0); i++) {
+          const movie = res.result?.results[i];
+          const video = movie ? this.movieService.getVideos(movie.id) : [];
 
-        video.forEach((videoRes) => {
-          if (latestVideos.length >= 4) {
-            return;
-          }
-          const trailer = videoRes.result?.results.find(
-            (v) => v.type === 'Trailer'
-          );
-          if (trailer && movie) {
-            const videoCard: VideoCard = {
-              id: 1,
-              title: movie.title,
-              img: movie.backdropPath,
-              publishedAt: trailer.publishedAt,
-              youtubeUrl: trailer.youtubeUrl,
-            };
-            latestVideos.push(videoCard);
-          }
-        });
-      }
-      this.videoLists.set({ videos: latestVideos });
+          video.forEach((videoRes) => {
+            if (latestVideos.length >= 4) {
+              return;
+            }
+            const trailer = videoRes.result?.results.find(
+              (v) => v.type === 'Trailer'
+            );
+            if (trailer && movie) {
+              const videoCard: VideoCard = {
+                id: 1,
+                title: movie.title,
+                img: movie.backdropPath,
+                publishedAt: trailer.publishedAt,
+                youtubeUrl: trailer.youtubeUrl,
+              };
+              latestVideos.push(videoCard);
+            }
+          });
+        }
+        this.videoLists.set({ videos: latestVideos });
+      },
     });
   }
 
   search(value: string) {
     if (value.length > 0) {
-      this.movieService.search({ Query: value }).subscribe((res) => {
-        if (res.result) {
-          this.refreshMovieList(res.result);
-        }
+      this.movieService.search({ Query: value }).subscribe({
+        next: (res) => {
+          if (res.result) {
+            this.refreshMovieList(res.result);
+          }
+        },
       });
     } else {
       this.movieService
@@ -102,10 +107,12 @@ export default class MoviesComponent implements OnInit {
           SortBy: 'VoteCountDesc',
           VoteAverageLte: 10,
         })
-        .subscribe((res) => {
-          if (res.result) {
-            this.refreshMovieList(res.result);
-          }
+        .subscribe({
+          next: (res) => {
+            if (res.result) {
+              this.refreshMovieList(res.result);
+            }
+          },
         });
     }
   }

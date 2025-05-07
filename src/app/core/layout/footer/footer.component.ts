@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -21,10 +21,8 @@ export class FooterComponent implements OnInit {
   subscriptionSuccess = false;
   currentYear = new Date().getFullYear();
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private supabaseFunctions: SupabaseFunctionsService
-  ) {}
+  private formBuilder = inject(FormBuilder);
+  private supabaseFunctions = inject(SupabaseFunctionsService);
 
   ngOnInit(): void {
     this.initForm();

@@ -1,5 +1,5 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -22,11 +22,9 @@ import { ApiResponse } from '@core/models/api-response.model';
 export default class VerifyComponent implements OnInit {
   verifyForm!: FormGroup;
 
-  constructor(
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private verifyService: VerifyService
-  ) {}
+  private verifyService = inject(VerifyService);
+  private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
     this.initForm();

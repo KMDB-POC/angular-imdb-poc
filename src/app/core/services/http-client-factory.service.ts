@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken } from '@angular/core';
+import { inject, Injectable, InjectionToken } from '@angular/core';
 import {
   HttpClient,
   HttpBackend,
@@ -29,11 +29,9 @@ class InterceptingHandler implements HttpHandler {
   providedIn: 'root',
 })
 export class HttpClientFactoryService {
-  constructor(
-    private httpBackend: HttpBackend,
-    private apiInterceptor: ApiInterceptor,
-    private supabaseApiInterceptor: SupabaseApiInterceptor
-  ) {}
+  private httpBackend = inject(HttpBackend);
+  private apiInterceptor = inject(ApiInterceptor);
+  private supabaseApiInterceptor = inject(SupabaseApiInterceptor);
 
   createHttpClient(type: 'backend' | 'supabase'): HttpClient {
     switch (type) {

@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SUPABASE_HTTP_CLIENT } from './http-client-factory.service';
 import { Observable } from 'rxjs';
@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class SupabaseFunctionsService {
-  constructor(@Inject(SUPABASE_HTTP_CLIENT) private http: HttpClient) {}
+  private http = inject<HttpClient>(SUPABASE_HTTP_CLIENT);
 
   /**
    * Subscribe email to receive notifications about new movies

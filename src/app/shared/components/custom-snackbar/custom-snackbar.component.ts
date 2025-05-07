@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import {
   MAT_SNACK_BAR_DATA,
   MatSnackBarRef,
@@ -16,8 +16,6 @@ export interface SnackbarData {
   styleUrls: ['./custom-snackbar.component.css'],
 })
 export class CustomSnackbarComponent {
-  constructor(
-    @Inject(MAT_SNACK_BAR_DATA) public data: SnackbarData,
-    public snackBarRef: MatSnackBarRef<CustomSnackbarComponent>
-  ) {}
+  data = inject<SnackbarData>(MAT_SNACK_BAR_DATA);
+  snackBarRef = inject(MatSnackBarRef<CustomSnackbarComponent>);
 }

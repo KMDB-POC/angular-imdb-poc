@@ -9,7 +9,7 @@ import { MovieCard } from '@features/movie/movie-card/movie-card.model';
   selector: 'movie-list',
   templateUrl: './movie-list.component.html',
   standalone: true,
-  imports: [MovieCardComponent, NgFor, NgIf],
+  imports: [MovieCardComponent],
   styleUrls: ['./movie-list.component.css'],
 })
 export class MovieListComponent {
