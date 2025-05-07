@@ -1,4 +1,4 @@
-import { Component, Input, model, output } from '@angular/core';
+import { Component, inject, Input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MoviesService } from '../movies.service';
 import { KeywordSearch } from '../movies.model';
@@ -9,9 +9,10 @@ import { debounceTime } from 'rxjs';
   templateUrl: './movie-search.component.html',
   imports: [FormsModule],
   standalone: true,
+  styleUrls: ['./movie-search.component.css'],
 })
 export class MovieSearchComponent {
-  constructor(private movieService: MoviesService) {}
+  private movieService = inject(MoviesService);
 
   searchValue = model<string>('');
 
@@ -22,8 +23,10 @@ export class MovieSearchComponent {
   inputChange(event: string) {
     debounceTime(500);
     this.searchValue.set(event);
-    this.movieService.findKeyword({ query: event }).subscribe((data) => {
-      this.suggestedItems.set(data.results);
+    this.movieService.findKeyword({ Query: event }).subscribe({
+      next: (data) => {
+        this.suggestedItems.set(data.result?.results || []);
+      },
     });
   }
 }

@@ -1,0 +1,15 @@
+.video-list {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.video-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+}
+
+.video-list-item {
+  width: 280px;
+  flex: 0 0 auto;
+}

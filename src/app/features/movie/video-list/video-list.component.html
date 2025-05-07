@@ -1,0 +1,9 @@
+<div class="video-list">
+  <div class="video-list-container">
+    @for (video of list?.videos; track video.id) {
+    <div class="video-list-item">
+      <video-card [card]="video"></video-card>
+    </div>
+    }
+  </div>
+</div>

@@ -44,4 +44,11 @@ Thumbs.db
 /.env.*
 
 # Local env files
-/src/environments/*
+/src/environments/environment.development.ts
+/src/environments/environment.local.ts
+
+# Supabase
+supabase/branches
+supabase/.temp
+supabase/.env
+supabase/functions/*.json

@@ -1,0 +1,130 @@
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transform-origin: center;
+  will-change: transform;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card > div {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  background-color: rgba(31, 41, 55, 0.5);
+  transition: all 0.3s ease;
+}
+
+.movie-card:hover > div {
+  box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.2),
+    0 10px 10px -5px rgba(59, 130, 246, 0.1);
+}
+
+.movie-card img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover img {
+  transform: scale(1.05);
+}
+
+.movie-card .content-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+}
+
+.movie-card h2 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-card .year {
+  font-size: 0.875rem;
+  color: rgb(156, 163, 175);
+}
+
+.movie-card .rating-container {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.movie-card .star-icon {
+  height: 1rem;
+  width: 1rem;
+  color: rgb(252, 211, 77);
+}
+
+.movie-card .score {
+  color: rgb(252, 211, 77);
+}
+
+.movie-card-loading {
+  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.movie-card .loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+
+.movie-card .loading-title {
+  height: 1.25rem;
+  width: 75%;
+  border-radius: 0.25rem;
+}
+
+.movie-card .loading-year {
+  height: 1rem;
+  width: 33.333333%;
+  border-radius: 0.25rem;
+}
+
+.movie-card .loading-score {
+  height: 1rem;
+  width: 50%;
+  border-radius: 0.25rem;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .movie-card h2 {
+    font-size: 0.9rem;
+  }
+
+  .movie-card p {
+    font-size: 0.8rem;
+  }
+}

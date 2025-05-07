@@ -1,0 +1,61 @@
+<footer class="bg-gray-900 text-white py-8">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-xl font-bold mb-4">Get Movie Updates</h3>
+        <p class="mb-4">Subscribe to receive notifications about the latest movies.</p>
+        <form (ngSubmit)="onSubscribe()" [formGroup]="subscribeForm">
+          <div class="flex flex-col space-y-2">
+            <input type="email" formControlName="email" placeholder="Your Email"
+              class="px-4 py-2 bg-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400">
+            <div *ngIf="subscribeForm.get('email')?.invalid && subscribeForm.get('email')?.touched"
+              class="text-red-400 text-sm">
+              Please enter a valid email address
+            </div>
+
+            <button type="submit" [disabled]="subscribeForm.invalid || isLoading"
+              [ngClass]="{'bg-indigo-500 hover:bg-indigo-400': !subscribeForm.invalid, 'bg-indigo-400 cursor-not-allowed': subscribeForm.invalid}"
+              class=" text-white font-medium py-2 px-4 rounded transition duration-300 disabled:opacity-80">
+              <span *ngIf="!isLoading">Subscribe</span>
+              <span *ngIf="isLoading">Subscribing...</span>
+            </button>
+          </div>
+        </form>
+        <div *ngIf="subscriptionMessage"
+          [ngClass]="{'text-green-400': subscriptionSuccess, 'text-red-400': !subscriptionSuccess}" class="mt-2">
+          {{ subscriptionMessage }}
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold mb-4">Movie Finder</h3>
+        <p class="mb-4">Your source for movie information and the latest trailers.</p>
+        <div class="flex space-x-4">
+          <a href="#" class="hover:text-blue-500">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="hover:text-blue-500">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="hover:text-blue-500">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+        <ul>
+          <li class="mb-2"><a href="#" class="hover:text-blue-500">Home</a></li>
+          <li class="mb-2"><a href="#" class="hover:text-blue-500">Movies</a></li>
+          <li class="mb-2"><a href="#" class="hover:text-blue-500">Top Rated</a></li>
+          <li class="mb-2"><a href="#" class="hover:text-blue-500">Coming Soon</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-800 mt-8 pt-6 text-center">
+      <p>&copy; {{ currentYear }} KMDB. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

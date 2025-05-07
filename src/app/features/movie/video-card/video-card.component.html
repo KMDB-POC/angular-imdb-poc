@@ -1,0 +1,18 @@
+<div class="video-card" (click)="openVideo()">
+  <div class="video-thumbnail">
+    <img [src]="card.img" [alt]="card.title">
+    <div class="overlay">
+      <div class="play-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="video-info">
+    <h3 class="video-title">{{ card.title }}</h3>
+    <div class="video-meta">
+      <p class="video-publish-date">{{ formatPublishDate(card.publishedAt) }}</p>
+    </div>
+  </div>
+</div>
